@@ -1,0 +1,192 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f0e8;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px 16px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      180deg,
+      #083f38 0%,
+      #0b4f47 55%,
+      #146b5a 100%
+    );
+}
+
+/* MARCA */
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  margin-bottom: 50px;
+}
+
+.brand-logo {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+  filter:
+    brightness(1)
+    invert(1);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.brand-text strong {
+  display: none;
+}
+
+.brand-text span {
+  font-size: 11px;
+  margin-top: -2;
+  opacity: 0.85;
+}
+
+/* MENU */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav a {
+  padding: 12px 14px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+
+  border-radius: 10px;
+
+  transition: 0.2s;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.sidebar-nav a.active {
+  background: #ffffff;
+  color: #0b4f47;
+
+  border-left: 5px solid #f47c48;
+}
+
+/* RODAPÉ SIDEBAR */
+
+.sidebar-footer {
+  margin-top: auto;
+
+  padding: 16px 10px;
+
+  font-size: 11px;
+  line-height: 1.5;
+
+  opacity: 0.7;
+}
+
+/* CONTEÚDO */
+
+.main-content {
+  flex: 1;
+
+  margin-left: 240px;
+
+  min-width: 0;
+}
+
+/* TOPO */
+
+.topbar {
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 0 32px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e3e8e5;
+}
+
+.topbar div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.topbar strong {
+  color: #0b4f47;
+  font-size: 14px;
+}
+
+.topbar span {
+  margin-top: 2px;
+
+  color: #788783;
+  font-size: 11px;
+}
+
+/* ÁREA DA PÁGINA */
+
+.page-content {
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 32px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 800px) {
+
+  .sidebar {
+    width: 190px;
+  }
+
+  .main-content {
+    margin-left: 190px;
+  }
+
+  .page-content {
+    padding: 20px;
+  }
+
+}

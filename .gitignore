@@ -1,0 +1,24 @@
+
+# Frontend Angular
+urbana-front/node_modules/
+urbana-front/.angular/
+urbana-front/dist/
+urbana-front/coverage/
+
+# Backend Java / Maven
+urbana-back/target/
+
+# IDE e sistema
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+.env.*
+!.env.example
+
+# Configuração local com credenciais
+urbana-back/src/main/resources/application.properties

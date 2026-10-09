@@ -1,0 +1,272 @@
+<div class="page-container">
+
+  <div class="page-heading">
+
+    <div>
+      <h1>Meus cartões</h1>
+
+      <p>
+        Gerencie os cartões de transporte cadastrados no sistema.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="register-card">
+
+    <div class="register-header">
+
+      <div class="register-icon">
+        +
+      </div>
+
+      <div>
+        <h2>Novo cartão</h2>
+
+        <p>
+          Cadastre um novo cartão para um usuário.
+        </p>
+      </div>
+
+    </div>
+
+
+    <form (ngSubmit)="createCard()">
+
+      <div class="form-group">
+
+        <label for="user">
+          Usuário
+        </label>
+
+        <select
+          id="user"
+          name="user"
+          [(ngModel)]="selectedUserId"
+          required
+        >
+
+          <option [ngValue]="null">
+            Selecione um usuário
+          </option>
+
+          @for (user of users; track user.id) {
+
+            <option [ngValue]="user.id">
+              {{ user.name }}
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="cardType">
+          Tipo de cartão
+        </label>
+
+        <select
+          id="cardType"
+          name="cardType"
+          [(ngModel)]="newCard.cardType"
+          required
+        >
+
+          <option value="COMMON">
+            Comum
+          </option>
+
+          <option value="STUDENT">
+            Estudante
+          </option>
+
+          <option value="WORKER">
+            Trabalhador
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="register-button"
+      >
+        <span>+</span>
+        Cadastrar
+      </button>
+
+    </form>
+
+  </div>
+
+
+  <div class="cards-title">
+
+    <div>
+
+      <span class="section-label">
+        MEUS REGISTROS
+      </span>
+
+      <h2>
+        Cartões cadastrados
+      </h2>
+
+      <p>
+        Visualize e gerencie os cartões registrados no sistema.
+      </p>
+
+    </div>
+
+    <div class="card-counter">
+
+      <strong>
+        {{ cards.length }}
+      </strong>
+
+      <span>
+        cartões
+      </span>
+
+    </div>
+
+  </div>
+
+
+  @if (cards.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        +
+      </div>
+
+      <h3>
+        Nenhum cartão cadastrado
+      </h3>
+
+      <p>
+        Cadastre um cartão utilizando o formulário acima.
+      </p>
+
+    </div>
+
+  } @else {
+
+    <div class="cards-container">
+
+      @for (card of cards; track card.id) {
+
+        <div
+          class="transport-card"
+          [ngClass]="getCardClass(card.cardType)"
+        >
+
+          <div class="card-top">
+
+            <img
+              src="/logo-urbana.png"
+              alt="Urbana"
+              class="brand-logo"
+            >
+
+            <span
+              class="status"
+              [class.inactive]="!card.active"
+            >
+
+              <span class="status-dot"></span>
+
+              {{ card.active ? 'Ativo' : 'Inativo' }}
+
+            </span>
+
+          </div>
+
+
+          <div class="card-information">
+
+            <span class="info-label">
+              USUÁRIO
+            </span>
+
+            <h3>
+              {{ card.cardName }}
+            </h3>
+
+
+            <span class="info-label">
+              NÚMERO DO CARTÃO
+            </span>
+
+            <div class="card-number">
+              {{ card.cardNumber }}
+            </div>
+
+
+            <div class="card-details">
+
+              <div>
+                <span class="info-label">
+                  TIPO
+                </span>
+
+                <strong>
+                  {{ getCardTypeLabel(card.cardType) }}
+                </strong>
+              </div>
+
+              <div>
+                <span class="info-label">
+                  STATUS
+                </span>
+
+                <strong>
+                  {{ card.active ? 'Disponível' : 'Bloqueado' }}
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="card-actions">
+
+            <button
+              type="button"
+              class="action-primary"
+              (click)="toggleCardStatus(card)"
+            >
+              {{ card.active ? 'Inativar cartão' : 'Ativar cartão' }}
+            </button>
+
+            <button
+              type="button"
+              class="action-delete"
+              (click)="deleteCard(card.id)"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+
+          <div class="card-decoration"></div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

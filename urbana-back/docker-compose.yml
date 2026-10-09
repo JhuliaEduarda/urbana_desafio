@@ -1,0 +1,17 @@
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: urbana-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: urbana
+      MYSQL_USER: urbana
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - urbana_mysql_data:/var/lib/mysql
+
+volumes:
+  urbana_mysql_data:
