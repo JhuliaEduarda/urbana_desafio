@@ -126,12 +126,15 @@ MySQL
 
 Para executar a aplicação, são necessários:
 
-- Git
 - JDK 17 ou superior compatível com o projeto
+  https://adoptium.net/temurin/releases/?version=17&utm_source=chatgpt.com
+  
 - Node.js compatível com Angular 21
+  https://nodejs.org/en/download?utm_source=chatgpt.com
+  
 - npm
 - Docker com Docker Compose
-- Conexão com a internet na primeira instalação das dependências
+  https://docs.docker.com/desktop/setup/install/windows-install/?utm_source=chatgpt.com
 
 Certifique-se de que as portas `3306`, `8080` e `4200` estejam disponíveis.
 
