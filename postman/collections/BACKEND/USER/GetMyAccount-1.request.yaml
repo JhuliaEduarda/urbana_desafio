@@ -1,0 +1,9 @@
+$kind: http-request
+name: GetMyAccount
+url: http://localhost:8080/users/me
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_1bnv}}"
+order: 3000

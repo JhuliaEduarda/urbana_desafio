@@ -1,0 +1,9 @@
+$kind: http-request
+name: FindAll
+url: http://localhost:8080/cards
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_07r5}}"
+order: 2000

@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create
+url: http://localhost:8080/users
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Priscilla Carla\",\r
+
+    \    \"email\": \"pc@gmail.com\",\r
+
+    \    \"password\": \"123456\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_07r5}}"
+order: 1000

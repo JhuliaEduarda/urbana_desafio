@@ -1,4 +1,3 @@
-
 package br.com.urbana.config;
 
 import br.com.urbana.entity.User;
@@ -22,30 +21,34 @@ public class AdminInitializer {
             @Value("${app.admin.password}") String adminPassword) {
 
         return args -> {
+            if (adminPassword == null || adminPassword.length() < 8) {
+                throw new IllegalStateException(
+                        "A senha do ADMIN deve ter pelo menos 8 caracteres."
+                );
+            }
+
+            User admin;
+
             if (userRepository.existsByEmail(adminEmail)) {
-                User existingUser = userRepository.findByEmail(adminEmail)
+                admin = userRepository.findByEmail(adminEmail)
                         .orElseThrow();
 
-                if (existingUser.getRole() != UserRole.ADMIN) {
+                if (admin.getRole() != UserRole.ADMIN) {
                     throw new IllegalStateException(
                             "O e-mail configurado para ADMIN já pertence a um usuário comum."
                     );
                 }
-                return;
-            }
 
-            if (adminPassword == null || adminPassword.length() < 12) {
-                throw new IllegalStateException(
-                        "A senha inicial do ADMIN deve ter pelo menos 12 caracteres."
-                );
+                admin.setPassword(passwordEncoder.encode(adminPassword));
+                admin.setName(adminName);
+            } else {
+                admin = new User();
+                admin.setName(adminName);
+                admin.setEmail(adminEmail);
+                admin.setPassword(passwordEncoder.encode(adminPassword));
+                admin.setStatus("Ativo");
+                admin.setRole(UserRole.ADMIN);
             }
-
-            User admin = new User();
-            admin.setName(adminName);
-            admin.setEmail(adminEmail);
-            admin.setPassword(passwordEncoder.encode(adminPassword));
-            admin.setStatus("Ativo");
-            admin.setRole(UserRole.ADMIN);
 
             userRepository.save(admin);
         };

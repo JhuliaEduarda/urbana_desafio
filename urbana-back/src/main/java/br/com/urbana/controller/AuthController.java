@@ -26,7 +26,6 @@ public class AuthController {
             LoginResponseDTO response = authService.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            // Retorna 401 Unauthorized com a mensagem do erro tratada
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", e.getMessage()));
         }

@@ -1,0 +1,20 @@
+$kind: http-request
+name: Update
+url: http://localhost:8080/users/33
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Priscilla\",\r
+
+    \    \"email\": \"pc@gmail.com\",\r
+
+    \    \"password\": \"654321\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0ktg}}"
+order: 6000

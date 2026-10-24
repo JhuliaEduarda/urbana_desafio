@@ -16,6 +16,12 @@ export interface UserRequest {
   password: string;
 }
 
+export interface UserUpdateRequest {
+  name: string;
+  email: string;
+  password?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,19 +35,44 @@ export class UserService {
     return this.http.get<User[]>(this.apiUrl);
   }
 
+  getMyAccount(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`);
+  }
+
+  changePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${this.apiUrl}/me/password`,
+      {
+        currentPassword,
+        newPassword
+      }
+    );
+  }
+
   create(user: UserRequest): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
   }
 
-  update(id: number, user: UserRequest): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+  update(id: number, user: UserUpdateRequest): Observable<User> {
+    return this.http.put<User>(
+      `${this.apiUrl}/${id}`,
+      user
+    );
   }
 
   toggleStatus(id: number): Observable<User> {
-    return this.http.patch<User>(`${this.apiUrl}/${id}/status`, {});
+    return this.http.patch<User>(
+      `${this.apiUrl}/${id}/status`,
+      {}
+    );
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(
+      `${this.apiUrl}/${id}`
+    );
   }
 }

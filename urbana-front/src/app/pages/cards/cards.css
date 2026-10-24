@@ -129,8 +129,6 @@ select:focus {
   font-size: 17px;
 }
 
-/* TÍTULO DOS CARTÕES */
-
 .cards-title {
   display: flex;
   align-items: center;
@@ -183,15 +181,11 @@ select:focus {
   text-transform: uppercase;
 }
 
-/* GRID */
-
 .cards-container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
-
-/* CARTÃO */
 
 .transport-card {
   position: relative;
@@ -220,8 +214,6 @@ select:focus {
 .card-worker {
   background: linear-gradient(145deg, #08665c, #168475);
 }
-
-/* CABEÇALHO */
 
 .card-top {
   position: relative;
@@ -264,8 +256,6 @@ select:focus {
 .status.inactive .status-dot {
   background: #d74a39;
 }
-
-/* INFORMAÇÕES */
 
 .card-information {
   position: relative;
@@ -310,8 +300,6 @@ select:focus {
   font-weight: 600;
 }
 
-/* AÇÕES */
-
 .card-actions {
   position: relative;
   z-index: 3;
@@ -346,8 +334,6 @@ select:focus {
   opacity: 0.9;
 }
 
-/* DECORAÇÃO */
-
 .card-decoration {
   position: absolute;
   right: -65px;
@@ -366,8 +352,6 @@ select:focus {
   border: 13px solid rgba(255, 255, 255, 0.07);
   border-radius: 50%;
 }
-
-/* ESTADO VAZIO */
 
 .empty-state {
   padding: 55px 20px;
@@ -400,8 +384,6 @@ select:focus {
   color: #7a8a86;
   font-size: 14px;
 }
-
-/* RESPONSIVO */
 
 @media (max-width: 1100px) {
   .cards-container {
@@ -439,4 +421,67 @@ select:focus {
   .card-number {
     font-size: 18px;
   }
+}
+
+.feedback {
+  margin-bottom: 18px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.feedback.success {
+  background: #dcf5e9;
+  color: #16734a;
+}
+
+.feedback.error {
+  background: #fde7e5;
+  color: #ad342b;
+}
+
+.request-list {
+  display: grid;
+  gap: 12px;
+}
+
+.request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #dce6e2;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.request-item p {
+  margin: 5px 0;
+}
+
+.request-item small {
+  color: #758580;
+}
+
+.request-status {
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.request-status.pending {
+  background: #fff1d6;
+  color: #946000;
+}
+
+.request-status.approved {
+  background: #dcf5e9;
+  color: #16734a;
+}
+
+.request-status.rejected {
+  background: #fde7e5;
+  color: #ad342b;
 }

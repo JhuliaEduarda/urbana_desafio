@@ -40,7 +40,6 @@ export class Login {
         this.router.navigate(['/users']);
       },
       error: (err) => {
-        // É AQUI QUE ENTRA O TRECHO DE TRATAMENTO DO ERRO:
         if (err.error && err.error.message) {
           this.errorMessage = err.error.message;
         } else {

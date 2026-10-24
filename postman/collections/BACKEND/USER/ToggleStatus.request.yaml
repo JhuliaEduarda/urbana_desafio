@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:8080/users/33/status
+method: PATCH
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0ktg}}"
+order: 6151

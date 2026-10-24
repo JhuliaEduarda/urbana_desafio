@@ -1,7 +1,3 @@
-/* =========================
-   BASE
-   ========================= */
-
 :host {
   display: block;
   color: #173c35;
@@ -10,10 +6,6 @@
 .page-container {
   width: 100%;
 }
-
-/* =========================
-   CABEÇALHO
-   ========================= */
 
 .page-heading {
   display: flex;
@@ -62,10 +54,6 @@
   font-size: 18px;
   line-height: 1;
 }
-
-/* =========================
-   PAINEL E PESQUISA
-   ========================= */
 
 .users-panel {
   padding: 24px;
@@ -116,10 +104,6 @@
   box-shadow: 0 0 0 3px rgba(11, 107, 95, 0.1);
 }
 
-/* =========================
-   FILTROS
-   ========================= */
-
 .filter-pills {
   display: flex;
   flex-wrap: wrap;
@@ -147,10 +131,6 @@
   background: #0b4f47;
   color: #ffffff;
 }
-
-/* =========================
-   TABELA DE USUÁRIOS
-   ========================= */
 
 .users-table-wrapper {
   overflow-x: auto;
@@ -211,10 +191,6 @@
   color: #687873;
 }
 
-/* =========================
-   ETIQUETA DE STATUS
-   ========================= */
-
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -245,10 +221,6 @@
 .status-badge.inactive .status-dot {
   background: #e5264d;
 }
-
-/* =========================
-   BOTÃO ATIVAR / INATIVAR
-   ========================= */
 
 .status-toggle { 
   width: 50px; 
@@ -314,10 +286,6 @@
   stroke: #f7194b;
 }
 
-/* =========================
-   AÇÕES DA TABELA
-   ========================= */
-
 .actions-column {
   width: 150px;
   text-align: right !important;
@@ -356,10 +324,6 @@
   color: #b44a28;
 }
 
-/* =========================
-   ESTADO VAZIO E RODAPÉ
-   ========================= */
-
 .empty-message {
   padding: 40px 16px !important;
   color: #879690 !important;
@@ -373,10 +337,6 @@
   font-weight: 700;
   text-align: right;
 }
-
-/* =========================
-   MODAL
-   ========================= */
 
 .modal-overlay {
   position: fixed;
@@ -492,10 +452,6 @@
   background: #e0ebe7;
 }
 
-/* =========================
-   RESPONSIVIDADE
-   ========================= */
-
 @media (max-width: 700px) {
   .page-heading {
     align-items: flex-start;
@@ -556,7 +512,6 @@
   }
 }
 
-/* FILTROS DE USUÁRIOS */
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -583,4 +538,128 @@
 .filter-buttons button.active {
   background: #0b4f47;
   color: #ffffff;
+}
+
+.details-button {
+  padding: 8px 11px;
+  border: 1px solid #cbded8;
+  border-radius: 8px;
+  background: #f1f7f5;
+  color: #08665c;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.details-button:hover,
+.details-button.selected {
+  background: #08665c;
+  color: #fff;
+}
+
+.user-details-row > td {
+  padding: 0 !important;
+  background: #f5f9f7;
+}
+
+.user-details {
+  padding: 26px;
+}
+
+.details-heading {
+  margin-bottom: 20px;
+}
+
+.details-heading h3 {
+  margin: 0;
+  color: #073f3a;
+  font-size: 21px;
+}
+
+.details-heading p,
+.details-message {
+  margin: 7px 0 0;
+  color: #71827e;
+  font-size: 13px;
+}
+
+.user-cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 20px;
+}
+
+.user-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #dce6e2;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(0, 70, 60, 0.04);
+}
+
+.user-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-caption {
+  color: #f47c48;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.user-card-heading h4 {
+  margin: 6px 0;
+  color: #173c35;
+  font-size: 17px;
+}
+
+.card-number {
+  margin: 0;
+  color: #71827e;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.card-status {
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #d9f5e7;
+  color: #087443;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.card-status.card-inactive {
+  background: #ffe1e6;
+  color: #c51e42;
+}
+
+.details-error,
+.details-success {
+  margin: 12px 0 0;
+  font-size: 12px;
+}
+
+.details-error {
+  color: #c51e42;
+}
+
+.details-success {
+  color: #087443;
+}
+
+@media (max-width: 700px) {
+  .user-details {
+    padding: 16px;
+  }
+
+  .user-card {
+    padding: 16px;
+  }
 }

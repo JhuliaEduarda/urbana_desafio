@@ -1,0 +1,145 @@
+<section class="account-page">
+
+  <header class="page-header">
+    <div>
+      <span class="section-label">PERFIL</span>
+      <h1>Minha conta</h1>
+      <p>
+        Consulte seus dados pessoais e mantenha sua senha atualizada.
+      </p>
+    </div>
+  </header>
+
+  <div
+    *ngIf="error"
+    class="message error"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+  <div
+    *ngIf="success"
+    class="message success"
+    role="status"
+  >
+    {{ success }}
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Carregando seus dados...
+  </div>
+
+  <ng-container *ngIf="!loading">
+
+    <section class="panel" *ngIf="user">
+
+      <div class="panel-heading">
+        <div class="panel-icon">✓</div>
+
+        <div>
+          <h2>Dados pessoais</h2>
+          <p>Informações da sua conta Urbana.</p>
+        </div>
+      </div>
+
+      <div class="info-field">
+        <span>Nome completo</span>
+        <strong>{{ user.name }}</strong>
+      </div>
+
+      <div class="info-field">
+        <span>E-mail</span>
+        <strong>{{ user.email }}</strong>
+      </div>
+
+    </section>
+
+    <section class="panel">
+
+      <div class="panel-heading">
+        <div class="panel-icon lock-icon">●</div>
+
+        <div>
+          <h2>Alterar senha</h2>
+          <p>
+            Informe sua senha atual para cadastrar uma nova.
+          </p>
+        </div>
+      </div>
+
+      <form
+        (ngSubmit)="changePassword()"
+        #passwordForm="ngForm"
+      >
+
+        <div class="field">
+          <label for="currentPassword">
+            Senha atual
+          </label>
+
+          <input
+            id="currentPassword"
+            name="currentPassword"
+            type="password"
+            autocomplete="current-password"
+            [(ngModel)]="currentPassword"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="newPassword">
+            Nova senha
+          </label>
+
+          <input
+            id="newPassword"
+            name="newPassword"
+            type="password"
+            autocomplete="new-password"
+            [(ngModel)]="newPassword"
+            minlength="6"
+            required
+          >
+
+          <small>
+            A senha deve ter pelo menos 6 caracteres.
+          </small>
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">
+            Confirmar nova senha
+          </label>
+
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            [(ngModel)]="confirmPassword"
+            required
+          >
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            [disabled]="saving || !passwordForm.valid"
+          >
+            {{
+              saving
+                ? 'Salvando...'
+                : 'Alterar senha'
+            }}
+          </button>
+        </div>
+
+      </form>
+
+    </section>
+
+  </ng-container>
+
+</section>

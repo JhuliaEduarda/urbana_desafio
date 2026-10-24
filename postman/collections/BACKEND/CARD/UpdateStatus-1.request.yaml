@@ -1,0 +1,14 @@
+$kind: http-request
+name: UpdateStatus
+url: http://localhost:8080/cards/42/status?active=false
+method: PATCH
+queryParams:
+  active: "false"
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_07r5}}"
+order: 4000

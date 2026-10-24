@@ -7,6 +7,5 @@ public record CardRequestDTO(
 
         @NotNull(message = "Card type is required")
         CardType cardType
-
 ) {
 }

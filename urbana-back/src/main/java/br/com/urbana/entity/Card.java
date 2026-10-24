@@ -2,13 +2,9 @@ package br.com.urbana.entity;
 
 import br.com.urbana.enums.CardType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "cards")
-@Getter
-@Setter
 public class Card {
 
     @Id
@@ -31,4 +27,52 @@ public class Card {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        this.Id = id;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

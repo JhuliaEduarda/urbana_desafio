@@ -1,0 +1,9 @@
+$kind: http-request
+name: FindById
+url: http://localhost:8080/users/7
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0cgt}}"
+order: 5000

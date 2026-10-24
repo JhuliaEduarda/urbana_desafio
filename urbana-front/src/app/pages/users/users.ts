@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { UserService } from '../../services/user.service';
 
 export type UserFilter = 'all' | 'active' | 'inactive';
@@ -27,7 +28,6 @@ export interface UserRequest {
   styleUrl: './users.css'
 })
 export class Users implements OnInit {
-
   users: User[] = [];
   filteredUsers: User[] = [];
 
@@ -43,19 +43,15 @@ export class Users implements OnInit {
     private readonly userService: UserService,
     private readonly cdr: ChangeDetectorRef,
     private readonly ngZone: NgZone
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
-  // =========================
-  // USUÁRIOS
-  // =========================
-
   loadUsers(): void {
     this.userService.findAll().subscribe({
-      next: (users) => {
+      next: users => {
         this.users = users.map(user => ({
           ...user,
           status: this.normalizeStatus(user.status)
@@ -64,7 +60,7 @@ export class Users implements OnInit {
         this.applyFilter();
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: error => {
         console.error('Erro ao carregar usuários:', error);
       }
     });
@@ -72,19 +68,20 @@ export class Users implements OnInit {
 
   createUser(): void {
     this.userService.create(this.newUser as any).subscribe({
-      next: (createdUser) => {
+      next: createdUser => {
         const user: User = {
           ...createdUser,
-          status: this.normalizeStatus(createdUser.status || this.newUser.status)
+          status: this.normalizeStatus(
+            createdUser.status || this.newUser.status
+          )
         };
 
         this.users = [...this.users, user];
-
         this.applyFilter();
         this.closeModal();
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: error => {
         console.error('Erro ao criar usuário:', error);
       }
     });
@@ -105,49 +102,62 @@ export class Users implements OnInit {
   }
 
   updateUser(): void {
-  if (this.editingUserId === null) return;
+    if (this.editingUserId === null) return;
 
-  this.userService.update(this.editingUserId, this.newUser as any).subscribe({
-    next: (updatedUser) => {
-      this.ngZone.run(() => {
-        this.users = this.users.map(user =>
-          user.id === updatedUser.id
-            ? { ...user, ...updatedUser }
-            : user
-        );
+    const payload = {
+      name: this.newUser.name,
+      email: this.newUser.email,
+      ...(this.newUser.password?.trim()
+      ? { password: this.newUser.password }
+      : {})
+    };
 
-        this.applyFilter();
-        this.closeModal();
-        this.cdr.detectChanges();
+    this.userService.update(this.editingUserId, payload)
+      .subscribe({
+        next: updatedUser => {
+          this.ngZone.run(() => {
+            this.users = this.users.map(user =>
+              user.id === updatedUser.id
+                ? {
+                    ...user,
+                    ...updatedUser,
+                    status: this.normalizeStatus(
+                      updatedUser.status || user.status
+                    )
+                  }
+                : user
+            );
+
+            this.applyFilter();
+            this.closeModal();
+            this.cdr.detectChanges();
+          });
+        },
+        error: error => {
+          console.error('Erro ao atualizar usuário:', error);
+        }
       });
-    },
-    error: (error) => {
-      console.error('Erro ao atualizar usuário:', error);
-    }
-  });
-}
+  }
 
   toggleUserStatus(user: User): void {
-    console.log('Usuário clicado:', user.id, user.name);
-
     this.userService.toggleStatus(user.id).subscribe({
-      next: (updatedUser) => {
-        console.log('Resposta do backend:', updatedUser);
-
+      next: updatedUser => {
         this.users = this.users.map(currentUser =>
           currentUser.id === updatedUser.id
             ? {
-              ...currentUser,
-              ...updatedUser,
-              status: this.normalizeStatus(updatedUser.status || currentUser.status)
-            }
+                ...currentUser,
+                ...updatedUser,
+                status: this.normalizeStatus(
+                  updatedUser.status || currentUser.status
+                )
+              }
             : currentUser
         );
 
         this.applyFilter();
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: error => {
         console.error('Erro ao alterar status do usuário:', error);
       }
     });
@@ -158,9 +168,7 @@ export class Users implements OnInit {
       'Tem certeza de que deseja excluir este usuário?'
     );
 
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     this.userService.delete(id).subscribe({
       next: () => {
@@ -168,13 +176,11 @@ export class Users implements OnInit {
         this.applyFilter();
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: error => {
         console.error('Erro ao excluir usuário:', error);
       }
     });
   }
-
-  // MODAL
 
   openModal(): void {
     this.isModalOpen = true;
@@ -189,8 +195,6 @@ export class Users implements OnInit {
     this.closeModal();
   }
 
-  // FILTROS
-
   setFilter(filter: UserFilter): void {
     this.selectedFilter = filter;
     this.applyFilter();
@@ -198,7 +202,6 @@ export class Users implements OnInit {
 
   applyFilter(): void {
     let result = [...this.users];
-
     const term = this.searchTerm.trim().toLowerCase();
 
     if (term) {
@@ -209,36 +212,36 @@ export class Users implements OnInit {
     }
 
     if (this.selectedFilter === 'active') {
-      result = result.filter(user => this.normalizeStatus(user.status) === 'Ativo');
+      result = result.filter(
+        user => this.normalizeStatus(user.status) === 'Ativo'
+      );
     } else if (this.selectedFilter === 'inactive') {
-      result = result.filter(user => this.normalizeStatus(user.status) === 'Inativo');
+      result = result.filter(
+        user => this.normalizeStatus(user.status) === 'Inativo'
+      );
     }
 
     this.filteredUsers = result;
   }
 
-  // CONTADORES
-
   get totalCount(): number {
-    return this.users ? this.users.length : 0;
+    return this.users.length;
   }
 
   get activeCount(): number {
-    if (!this.users) return 0;
-    return this.users.filter(u => this.normalizeStatus(u.status) === 'Ativo').length;
+    return this.users.filter(
+      user => this.normalizeStatus(user.status) === 'Ativo'
+    ).length;
   }
 
   get inactiveCount(): number {
-    if (!this.users) return 0;
-    return this.users.filter(u => this.normalizeStatus(u.status) === 'Inativo').length;
+    return this.users.filter(
+      user => this.normalizeStatus(user.status) === 'Inativo'
+    ).length;
   }
 
-  // UTILITÁRIOS
-
   getInitials(name: string): string {
-    if (!name) {
-      return '';
-    }
+    if (!name) return '';
 
     const parts = name.trim().split(/\s+/);
 
@@ -251,7 +254,10 @@ export class Users implements OnInit {
 
   private normalizeStatus(status?: string): 'Ativo' | 'Inativo' {
     if (!status) return 'Ativo';
-    return status.trim().toLowerCase() === 'inativo' ? 'Inativo' : 'Ativo';
+
+    return status.trim().toLowerCase() === 'inativo'
+      ? 'Inativo'
+      : 'Ativo';
   }
 
   private createEmptyUser(): UserRequest {

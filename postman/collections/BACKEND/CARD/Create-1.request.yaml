@@ -1,0 +1,18 @@
+$kind: http-request
+name: Create
+url: http://localhost:8080/cards/user/32
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"userId\": 32,\r
+
+    \    \"cardType\": \"STUDENT\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_07r5}}"
+order: 1000

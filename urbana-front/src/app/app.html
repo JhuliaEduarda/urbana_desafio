@@ -1,48 +1,47 @@
-<!-- Quando estiver na tela de login, renderiza apenas o conteúdo limpo em tela cheia -->
 <div *ngIf="isLoginPage">
   <router-outlet></router-outlet>
 </div>
 
-<!-- Para as outras páginas (Usuários, Cartões), exibe com a estrutura completa -->
 <div *ngIf="!isLoginPage" class="app-layout">
-
   <aside class="sidebar">
-
     <div class="brand">
-      <img
-        src="/logo-urbana.png"
-        alt="Urbana"
-        class="brand-logo"
-      >
+      <img src="/logo-urbana.png" alt="Urbana" class="brand-logo">
+
       <div class="brand-text">
         <span>Pernambuco em movimento</span>
       </div>
     </div>
 
+
     <nav class="sidebar-nav">
-      <a
-        routerLink="/users"
-        routerLinkActive="active"
-      >
+      <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="active">
         Usuários
       </a>
 
-      <a
-        routerLink="/cards"
-        routerLinkActive="active"
-      >
+      <a routerLink="/cards" routerLinkActive="active">
         Cartões
       </a>
+
+      <a *ngIf="isAdmin" routerLink="/requests" routerLinkActive="active">
+        Solicitações
+      </a>
+
+      <a *ngIf="!isAdmin" routerLink="/my-account" routerLinkActive="active">
+        Minha conta
+      </a>
+
+      <button type="button" class="logout-button" (click)="logout()">
+        Sair
+      </button>
+
     </nav>
 
     <div class="sidebar-footer">
       Região Metropolitana do Recife
     </div>
-
   </aside>
 
   <main class="main-content">
-
     <header class="topbar">
       <div>
         <strong>URBANA</strong>
@@ -53,7 +52,5 @@
     <section class="page-content">
       <router-outlet></router-outlet>
     </section>
-
   </main>
-
 </div>

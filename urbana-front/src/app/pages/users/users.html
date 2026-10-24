@@ -1,5 +1,4 @@
 <div class="page-container">
-
   <div class="page-heading">
     <div>
       <h1>Usuários</h1>
@@ -12,22 +11,21 @@
     </button>
   </div>
 
-
   <div class="users-panel">
-
     <div class="users-toolbar">
-
       <div class="search-box">
-
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
 
-        <input type="text" placeholder="Buscar por nome ou e-mail..." [(ngModel)]="searchTerm" (input)="applyFilter()">
-
+        <input
+          type="text"
+          placeholder="Buscar por nome ou e-mail..."
+          [(ngModel)]="searchTerm"
+          (input)="applyFilter()">
       </div>
-
     </div>
 
     <div class="filter-buttons">
@@ -45,9 +43,7 @@
     </div>
 
     <div class="users-table-wrapper">
-
       <table class="users-table">
-
         <thead>
           <tr>
             <th>Nome</th>
@@ -58,190 +54,145 @@
         </thead>
 
         <tbody>
-
           @if (filteredUsers.length === 0) {
-
-          <tr>
-            <td colspan="4" class="empty-message">
-              Nenhum usuário encontrado.
-            </td>
-          </tr>
-
+            <tr>
+              <td colspan="4" class="empty-message">
+                Nenhum usuário encontrado.
+              </td>
+            </tr>
           } @else {
+            @for (user of filteredUsers; track user.id) {
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <div class="avatar">{{ getInitials(user.name) }}</div>
+                    <strong>{{ user.name }}</strong>
+                  </div>
+                </td>
 
-          @for (user of filteredUsers; track user.id) {
+                <td>
+                  <span class="email">{{ user.email }}</span>
+                </td>
 
-          <tr>
-
-            <td>
-              <div class="user-info">
-
-                <div class="avatar">
-                  {{ getInitials(user.name) }}
-                </div>
-
-                <strong>
-                  {{ user.name }}
-                </strong>
-
-              </div>
-            </td>
-
-            <td>
-              <span class="email">
-                {{ user.email }}
-              </span>
-            </td>
-
-            <td>
-              <span class="status-badge" [class.inactive]="user.status === 'Inativo'">
-                <span class="status-dot"></span>
-                {{ user.status || 'Ativo' }}
-              </span>
-            </td>
-
-            <td class="actions-column">
-
-              <div class="actions">
-
-                <button type="button" class="icon-button" title="Editar" (click)="editUser(user)">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                </button>
-
-
-                <button type="button" class="status-toggle" [class.inactive]="user.status === 'Inativo'"
-                  [attr.aria-label]="user.status === 'Inativo' ? 'Ativar usuário' : 'Inativar usuário'"
-                  [title]="user.status === 'Inativo' ? 'Ativar usuário' : 'Inativar usuário'"
-                  (click)="toggleUserStatus(user)">
-                  <span class="status-toggle-circle">
-                    @if (user.status === 'Inativo') {
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 6L18 18M18 6L6 18"></path>
-                    </svg>
-                    } @else {
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M5 12.5L10 17L19 7"></path>
-                    </svg>
-                    }
+                <td>
+                  <span class="status-badge" [class.inactive]="user.status === 'Inativo'">
+                    <span class="status-dot"></span>
+                    {{ user.status || 'Ativo' }}
                   </span>
-                </button>
+                </td>
 
-                <button type="button" class="icon-button delete" title="Excluir" (click)="deleteUser(user.id)">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                  </svg>
-                </button>
+                <td class="actions-column">
+                  <div class="actions">
+                    <button type="button" class="icon-button"
+                      title="Editar" (click)="editUser(user)">
+                      <svg width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                      </svg>
+                    </button>
 
-              </div>
+                    <button
+                      type="button"
+                      class="status-toggle"
+                      [class.inactive]="user.status === 'Inativo'"
+                      [attr.aria-label]="user.status === 'Inativo' ? 'Ativar usuário' : 'Inativar usuário'"
+                      [title]="user.status === 'Inativo' ? 'Ativar usuário' : 'Inativar usuário'"
+                      (click)="toggleUserStatus(user)">
+                      <span class="status-toggle-circle">
+                        @if (user.status === 'Inativo') {
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 6L18 18M18 6L6 18"></path>
+                          </svg>
+                        } @else {
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 12.5L10 17L19 7"></path>
+                          </svg>
+                        }
+                      </span>
+                    </button>
 
-            </td>
-
-          </tr>
-
+                    <button
+                      type="button"
+                      class="icon-button delete"
+                      title="Excluir"
+                      (click)="deleteUser(user.id)">
+                      <svg width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
           }
-
-          }
-
         </tbody>
-
       </table>
-
     </div>
-
   </div>
-
 
   <div class="page-footer">
     Gente que move Pernambuco.
   </div>
-
 </div>
-
 
 @if (isModalOpen) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <span class="modal-label">
+            {{ editingUserId === null ? 'NOVO CADASTRO' : 'EDIÇÃO' }}
+          </span>
+          <h2>{{ editingUserId === null ? 'Criar usuário' : 'Editar usuário' }}</h2>
+        </div>
 
-<div class="modal-overlay" (click)="closeModal()">
-
-  <div class="modal" (click)="$event.stopPropagation()">
-
-    <div class="modal-header">
-
-      <div>
-        <span class="modal-label">
-          {{ editingUserId === null ? 'NOVO CADASTRO' : 'EDIÇÃO' }}
-        </span>
-
-        <h2>
-          {{ editingUserId === null ? 'Criar usuário' : 'Editar usuário' }}
-        </h2>
+        <button type="button" class="close-button" (click)="closeModal()">×</button>
       </div>
 
-      <button type="button" class="close-button" (click)="closeModal()">
-        ×
-      </button>
+      <form (ngSubmit)="editingUserId === null ? createUser() : updateUser()">
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input id="name" type="text" name="name"
+            [(ngModel)]="newUser.name" placeholder="Digite o nome" required>
+        </div>
 
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" name="email"
+            [(ngModel)]="newUser.email" placeholder="Digite o e-mail" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            [(ngModel)]="newUser.password"
+            [placeholder]="editingUserId === null
+              ? 'Digite a senha'
+              : 'Deixe em branco para manter a senha atual'"
+            [required]="editingUserId === null"
+            minlength="6">
+
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" (click)="closeModal()">
+            Cancelar
+          </button>
+
+          <button type="submit" class="primary-button">
+            {{ editingUserId === null ? 'Cadastrar' : 'Salvar alterações' }}
+          </button>
+        </div>
+      </form>
     </div>
-
-
-    <form (ngSubmit)="editingUserId === null ? createUser() : updateUser()">
-
-      <div class="form-group">
-
-        <label for="name">
-          Nome
-        </label>
-
-        <input id="name" type="text" name="name" [(ngModel)]="newUser.name" placeholder="Digite o nome" required>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label for="email">
-          E-mail
-        </label>
-
-        <input id="email" type="email" name="email" [(ngModel)]="newUser.email" placeholder="Digite o e-mail" required>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label for="password">
-          Senha
-        </label>
-
-        <input id="password" type="password" name="password" [(ngModel)]="newUser.password" placeholder="Digite a senha"
-          [required]="editingUserId === null">
-
-      </div>
-
-
-      <div class="modal-actions">
-
-        <button type="button" class="secondary-button" (click)="closeModal()">
-          Cancelar
-        </button>
-
-        <button type="submit" class="primary-button">
-          {{ editingUserId === null ? 'Cadastrar' : 'Salvar alterações' }}
-        </button>
-
-      </div>
-
-    </form>
-
   </div>
-
-</div>
-
 }

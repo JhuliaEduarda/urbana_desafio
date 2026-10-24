@@ -1,0 +1,9 @@
+$kind: http-request
+name: Delete
+url: http://localhost:8080/cards/40
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_07r5}}"
+order: 5000

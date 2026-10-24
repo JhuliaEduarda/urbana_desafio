@@ -1,74 +1,65 @@
 <div class="page-container">
-
   <div class="page-heading">
-
     <div>
-      <h1>Meus cartões</h1>
+      <h1>{{ isAdmin ? 'Todos os cartões' : 'Meus cartões' }}</h1>
 
       <p>
-        Gerencie os cartões de transporte cadastrados no sistema.
+        {{
+          isAdmin
+            ? 'Gerencie os cartões de transporte dos usuários.'
+            : 'Consulte seus cartões e solicite um novo cartão de transporte.'
+        }}
       </p>
     </div>
-
   </div>
 
+  @if (feedback) {
+    <div class="feedback success" role="status">{{ feedback }}</div>
+  }
+
+  @if (errorMessage) {
+    <div class="feedback error" role="alert">{{ errorMessage }}</div>
+  }
 
   <div class="register-card">
-
     <div class="register-header">
-
-      <div class="register-icon">
-        +
-      </div>
+      <div class="register-icon">+</div>
 
       <div>
-        <h2>Novo cartão</h2>
+        <h2>{{ isAdmin ? 'Cadastrar cartão' : 'Solicitar cartão' }}</h2>
 
         <p>
-          Cadastre um novo cartão para um usuário.
+          {{
+            isAdmin
+              ? 'Cadastre um cartão para um usuário.'
+              : 'Escolha o tipo de cartão que deseja solicitar.'
+          }}
         </p>
       </div>
-
     </div>
 
-
     <form (ngSubmit)="createCard()">
+      @if (isAdmin) {
+        <div class="form-group">
+          <label for="user">Usuário</label>
+
+          <select
+            id="user"
+            name="user"
+            [(ngModel)]="selectedUserId"
+            required
+          >
+            <option [ngValue]="null">Selecione um usuário</option>
+
+            @for (user of users; track user.id) {
+              <option [ngValue]="user.id">{{ user.name }}</option>
+            }
+          </select>
+        </div>
+      }
 
       <div class="form-group">
-
-        <label for="user">
-          Usuário
-        </label>
-
-        <select
-          id="user"
-          name="user"
-          [(ngModel)]="selectedUserId"
-          required
-        >
-
-          <option [ngValue]="null">
-            Selecione um usuário
-          </option>
-
-          @for (user of users; track user.id) {
-
-            <option [ngValue]="user.id">
-              {{ user.name }}
-            </option>
-
-          }
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label for="cardType">
-          Tipo de cartão
-        </label>
+        <label for="cardType">Tipo de cartão</label>
 
         <select
           id="cardType"
@@ -76,197 +67,165 @@
           [(ngModel)]="newCard.cardType"
           required
         >
-
-          <option value="COMMON">
-            Comum
-          </option>
-
-          <option value="STUDENT">
-            Estudante
-          </option>
-
-          <option value="WORKER">
-            Trabalhador
-          </option>
-
+          <option value="COMMON">Comum</option>
+          <option value="STUDENT">Estudante</option>
+          <option value="WORKER">Trabalhador</option>
         </select>
-
       </div>
-
 
       <button
         type="submit"
         class="register-button"
+        [disabled]="submitting || (isAdmin && selectedUserId === null)"
       >
         <span>+</span>
-        Cadastrar
+        {{
+          submitting
+            ? 'Enviando...'
+            : isAdmin
+              ? 'Cadastrar cartão'
+              : 'Enviar solicitação'
+        }}
       </button>
-
     </form>
-
   </div>
 
+  @if (!isAdmin) {
+    <div class="cards-title">
+      <div>
+        <span class="section-label">ACOMPANHAMENTO</span>
+        <h2>Minhas solicitações</h2>
+        <p>Acompanhe as decisões do administrador.</p>
+      </div>
+    </div>
+
+    @if (loadingRequests) {
+      <div class="empty-state">Carregando solicitações...</div>
+    } @else if (requests.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">+</div>
+        <h3>Nenhuma solicitação enviada</h3>
+        <p>Use o formulário acima para solicitar seu primeiro cartão.</p>
+      </div>
+    } @else {
+      <div class="request-list">
+        @for (request of requests; track request.id) {
+          <div class="request-item">
+            <div>
+              <strong>Cartão {{ cardTypeLabel(request.cardType) }}</strong>
+              <p>Solicitação #{{ request.id }}</p>
+              <small>Enviada em {{ request.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+            </div>
+
+            <span
+              class="request-status"
+              [ngClass]="request.status.toLowerCase()"
+            >
+              {{ statusLabel(request.status) }}
+            </span>
+          </div>
+        }
+      </div>
+    }
+  }
 
   <div class="cards-title">
-
     <div>
-
       <span class="section-label">
-        MEUS REGISTROS
+        {{ isAdmin ? 'REGISTROS DO SISTEMA' : 'MEUS REGISTROS' }}
       </span>
 
-      <h2>
-        Cartões cadastrados
-      </h2>
+      <h2>Cartões cadastrados</h2>
 
       <p>
-        Visualize e gerencie os cartões registrados no sistema.
+        {{
+          isAdmin
+            ? 'Visualize e gerencie os cartões registrados no sistema.'
+            : 'Cartões aprovados e vinculados à sua conta.'
+        }}
       </p>
-
     </div>
 
     <div class="card-counter">
-
-      <strong>
-        {{ cards.length }}
-      </strong>
-
-      <span>
-        cartões
-      </span>
-
+      <strong>{{ cards.length }}</strong>
+      <span>{{ cards.length === 1 ? 'cartão' : 'cartões' }}</span>
     </div>
-
   </div>
 
-
-  @if (cards.length === 0) {
-
+  @if (loadingCards) {
+    <div class="empty-state">Carregando cartões...</div>
+  } @else if (cards.length === 0) {
     <div class="empty-state">
-
-      <div class="empty-icon">
-        +
-      </div>
-
-      <h3>
-        Nenhum cartão cadastrado
-      </h3>
-
+      <div class="empty-icon">+</div>
+      <h3>Nenhum cartão cadastrado</h3>
       <p>
-        Cadastre um cartão utilizando o formulário acima.
+        {{
+          isAdmin
+            ? 'Cadastre um cartão utilizando o formulário acima.'
+            : 'Seus cartões aparecerão aqui após serem aprovados.'
+        }}
       </p>
-
     </div>
-
   } @else {
-
     <div class="cards-container">
-
       @for (card of cards; track card.id) {
-
-        <div
-          class="transport-card"
-          [ngClass]="getCardClass(card.cardType)"
-        >
-
+        <div class="transport-card" [ngClass]="getCardClass(card.cardType)">
           <div class="card-top">
-
             <img
               src="/logo-urbana.png"
               alt="Urbana"
               class="brand-logo"
             >
 
-            <span
-              class="status"
-              [class.inactive]="!card.active"
-            >
-
+            <span class="status" [class.inactive]="!card.active">
               <span class="status-dot"></span>
-
               {{ card.active ? 'Ativo' : 'Inativo' }}
-
             </span>
-
           </div>
-
 
           <div class="card-information">
+            <span class="info-label">USUÁRIO</span>
+            <h3>{{ card.cardName }}</h3>
 
-            <span class="info-label">
-              USUÁRIO
-            </span>
-
-            <h3>
-              {{ card.cardName }}
-            </h3>
-
-
-            <span class="info-label">
-              NÚMERO DO CARTÃO
-            </span>
-
-            <div class="card-number">
-              {{ card.cardNumber }}
-            </div>
-
+            <span class="info-label">NÚMERO DO CARTÃO</span>
+            <div class="card-number">{{ card.cardNumber }}</div>
 
             <div class="card-details">
-
               <div>
-                <span class="info-label">
-                  TIPO
-                </span>
-
-                <strong>
-                  {{ getCardTypeLabel(card.cardType) }}
-                </strong>
+                <span class="info-label">TIPO</span>
+                <strong>{{ cardTypeLabel(card.cardType) }}</strong>
               </div>
 
               <div>
-                <span class="info-label">
-                  STATUS
-                </span>
-
-                <strong>
-                  {{ card.active ? 'Disponível' : 'Bloqueado' }}
-                </strong>
+                <span class="info-label">STATUS</span>
+                <strong>{{ card.active ? 'Disponível' : 'Bloqueado' }}</strong>
               </div>
-
             </div>
-
           </div>
 
+          @if (isAdmin) {
+            <div class="card-actions">
+              <button
+                type="button"
+                class="action-primary"
+                (click)="toggleCardStatus(card)"
+              >
+                {{ card.active ? 'Inativar cartão' : 'Ativar cartão' }}
+              </button>
 
-          <div class="card-actions">
-
-            <button
-              type="button"
-              class="action-primary"
-              (click)="toggleCardStatus(card)"
-            >
-              {{ card.active ? 'Inativar cartão' : 'Ativar cartão' }}
-            </button>
-
-            <button
-              type="button"
-              class="action-delete"
-              (click)="deleteCard(card.id)"
-            >
-              Excluir
-            </button>
-
-          </div>
-
+              <button
+                type="button"
+                class="action-delete"
+                (click)="deleteCard(card.id)"
+              >
+                Excluir
+              </button>
+            </div>
+          }
 
           <div class="card-decoration"></div>
-
         </div>
-
       }
-
     </div>
-
   }
-
 </div>

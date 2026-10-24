@@ -1,0 +1,10 @@
+$kind: http-request
+url: http://localhost:8080/card-requests/11/decision?approved=true
+method: PATCH
+queryParams:
+  approved: "true"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0w3d}}"
+order: 3000

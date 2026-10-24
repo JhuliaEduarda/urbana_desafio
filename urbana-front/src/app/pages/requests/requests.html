@@ -1,0 +1,103 @@
+<div class="requests-page">
+  <header class="page-heading">
+    <div>
+      <span class="section-label">GESTÃO DE CARTÕES</span>
+      <h1>Solicitações</h1>
+      <p>Analise os pedidos e registre sua decisão.</p>
+    </div>
+
+    <div class="request-counter">
+      <strong>{{ requests.length }}</strong>
+      <span>solicitações</span>
+    </div>
+  </header>
+
+  @if (message) {
+    <div class="feedback success" role="status">{{ message }}</div>
+  }
+
+  @if (errorMessage) {
+    <div class="feedback error" role="alert">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="empty-state">Carregando solicitações...</div>
+  } @else if (requests.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">✓</div>
+      <h2>Nenhuma solicitação</h2>
+      <p>Quando alguém solicitar um cartão, o pedido aparecerá aqui.</p>
+    </div>
+  } @else {
+    <div class="requests-table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Solicitante</th>
+            <th>Tipo de cartão</th>
+            <th>Data do pedido</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (request of requests; track request.id) {
+            <tr>
+              <td>
+                <strong>{{ request.userName }}</strong>
+                <small>ID {{ request.userId }}</small>
+              </td>
+
+              <td>{{ cardTypeLabel(request.cardType) }}</td>
+              <td>{{ formatDate(request.createdAt) }}</td>
+
+              <td>
+                <span class="status" [ngClass]="request.status.toLowerCase()">
+                  {{ statusLabel(request.status) }}
+                </span>
+              </td>
+
+              <td>
+                @if (request.status === 'PENDING') {
+                  <div class="actions">
+                    <button
+                      type="button"
+                      class="approve-button"
+                      [disabled]="processingId !== null"
+                      (click)="decide(request, true)"
+                    >
+                      {{ processingId === request.id ? 'Processando...' : 'Aprovar' }}
+                    </button>
+
+                    <button
+                      type="button"
+                      class="reject-button"
+                      [disabled]="processingId !== null"
+                      (click)="decide(request, false)"
+                    >
+                      Rejeitar
+                    </button>
+                  </div>
+                } @else {
+                  <span class="decision-date">
+                    {{ request.decidedAt ? formatDate(request.decidedAt) : 'Decidida' }}
+                  </span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <button
+    type="button"
+    class="refresh-button"
+    [disabled]="loading"
+    (click)="loadRequests()"
+  >
+    Atualizar solicitações
+  </button>
+</div>
