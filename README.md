@@ -140,7 +140,7 @@ Certifique-se de que as portas `3306`, `8080` e `4200` estejam disponíveis.
 ### 1. Clonar o repositório
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone https://github.com/JhuliaEduarda/urbana_desafio
 cd urbana-desafio
 ```
 
